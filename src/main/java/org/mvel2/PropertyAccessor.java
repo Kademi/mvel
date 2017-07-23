@@ -567,6 +567,19 @@ public class PropertyAccessor {
         return LITERALS.get(property);
       }
       else if (variableFactory != null && variableFactory.isResolveable(property)) {
+         /**
+         * First: verifies that filtersManager was initialized for use.
+         * Second: checks the invoked class access availability.
+         * 
+         * Output: - returns null if class was filtered by developer.
+         *         - continues without any effective behaviour if class was not
+         *         filtered or filtersManager was not initialized.
+         */
+
+        if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(variableFactory.getVariableResolver(property).getValue().getClass().getName())) {
+            return null;
+        }
+          
         return variableFactory.getVariableResolver(property).getValue();
       }
     }
@@ -852,6 +865,18 @@ public class PropertyAccessor {
    */
   @SuppressWarnings({"unchecked"})
   private Object getMethod(Object ctx, String name) {
+    /**
+     * First: verifies that filtersManager was initialized for use.
+     * Second: checks the invoked class access availability.
+     * 
+     * Output: - returns null if class was filtered by developer.
+     *         - continues without any effective behaviour if class was not
+     *         filtered or filtersManager was not initialized.
+     */
+    if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(ctx.getClass().getName())) {
+        return null;
+    }
+    
     int _start = cursor;
 
     String tk = cursor != end
