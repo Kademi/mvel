@@ -91,8 +91,15 @@ public class ParserContext implements Serializable {
   private boolean indexAllocation = false;
   protected boolean variablesEscape = false;
 
+  /**
+   * Handles Filters Manager.
+   */
+  private FiltersManager filtersManager = null;
+
   public ParserContext() {
     parserConfiguration = new ParserConfiguration();
+    
+    initializeFilters();
   }
 
   public ParserContext(boolean debugSymbols) {
@@ -107,6 +114,8 @@ public class ParserContext implements Serializable {
 
   public ParserContext(ParserConfiguration parserConfiguration) {
     this.parserConfiguration = parserConfiguration;
+    
+    initializeFilters();
   }
 
   public ParserContext(ParserConfiguration parserConfiguration, Object evaluationContext) {
@@ -123,6 +132,8 @@ public class ParserContext implements Serializable {
   public ParserContext(Map<String, Object> imports, Map<String, Interceptor> interceptors, String sourceFile) {
     this.sourceFile = sourceFile;
     this.parserConfiguration = new ParserConfiguration(imports, interceptors);
+    
+    initializeFilters();
   }
 
   public ParserContext createSubcontext() {
@@ -1084,4 +1095,54 @@ public class ParserContext implements Serializable {
 
     return this;
   }
+    /**
+     * Initializes MVEL filters manager.
+     */
+    private void initializeFilters() {
+        /**
+         * In case the developer did not add mvel.filtersManager attribute
+         * we catch the exception to make MVEL act normally as default behaviour
+        */
+        try {
+            String classFilter = (String) getProperty("mvel.filtersManager");
+            if (classFilter != null) {
+              filtersManager = (FiltersManager) Class.forName(classFilter).newInstance();
+            }
+        } catch (Exception x) {
+        }
+    }
+    
+    public FiltersManager getFiltersManager(){
+        return filtersManager;
+    }
+
+    /**
+     * Allows an external caller to add property to the context.
+     *
+     * @param key: property name.
+     * @param value: property class.
+     */
+    public void addProperty(String key, String value) {
+        System.setProperty(key, value);
+    }
+
+    /**
+     * Allows an external caller to get a property.
+     *
+     * @param key property to return
+     * @return Value of the property or null if it does not exist.
+     */
+    public Object getProperty(String key) {
+        return System.getProperty(key);
+    }
+    
+    /**
+     * Allows an external caller to check property availability.
+     *
+     * @param key property to return
+     * @return true if the property existing or false if it does not exist.
+     */
+    public boolean hasProperty(String key) {
+        return this.getProperty(key) != null;
+    }
 }
