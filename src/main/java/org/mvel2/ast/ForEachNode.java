@@ -107,6 +107,21 @@ public class ForEachNode extends BlockNode {
 
       case ITERABLE:
         for (Object o : (Iterable) iterCond) {
+        /**
+         * First: verifies that filtersManager was initialized for use.
+         * Second: checks the invoked class access availability.
+         * 
+         * Here, we work on checking that non of the arrays lists have
+         * any of filtered classes.
+         * 
+         * Output: - returns null if class was filtered by developer.
+         *         - continues without any effective behaviour if class was not
+         *         filtered or filtersManager was not initialized.
+         */
+        if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(o.getClass().getName())) {
+            return null;
+        }
+            
           itemR.setValue(o);
           v = compiledBlock.getValue(ctx, thisValue, itemFactory);
           if (itemFactory.tiltFlag()) return v;
