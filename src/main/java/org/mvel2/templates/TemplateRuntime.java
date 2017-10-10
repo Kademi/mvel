@@ -73,10 +73,14 @@ public class TemplateRuntime {
   }
 
   public static Object eval(InputStream instream, Object ctx, Map vars) {
+    validateVars(vars);
+    
     return eval(instream, ctx, new MapVariableResolverFactory(vars), null);
   }
 
   public static Object eval(InputStream instream, Object ctx, Map vars, TemplateRegistry registry) {
+    validateVars(vars);
+    
     return execute(compileTemplate(TemplateTools.readStream(instream)), ctx, new MapVariableResolverFactory(vars), registry);
   }
 
@@ -89,10 +93,14 @@ public class TemplateRuntime {
   }
 
   public static Object eval(String template, Map vars) {
+    validateVars(vars);
+    
     return execute(compileTemplate(template), null, new MapVariableResolverFactory(vars));
   }
 
   public static void eval(String template, Map vars, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compileTemplate(template), null, new MapVariableResolverFactory(vars), null, stream);
   }
 
@@ -101,10 +109,14 @@ public class TemplateRuntime {
   }
 
   public static Object eval(String template, Object ctx, Map vars) {
+    validateVars(vars);
+    
     return execute(compileTemplate(template), ctx, new MapVariableResolverFactory(vars));
   }
 
   public static void eval(String template, Object ctx, Map vars, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compileTemplate(template), ctx, new MapVariableResolverFactory(vars), null, stream);
   }
 
@@ -121,29 +133,32 @@ public class TemplateRuntime {
   }
 
   public static Object eval(String template, Map vars, TemplateRegistry registry) {
-    ParserContext pCtx = new ParserContext();
-    for(Object o: vars.values()){
-        if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(o.getClass().getName())) {
-            throw new TemplateError("used class is not allowed to access: " + o.getClass().getName());
-        }
-    }
+    validateVars(vars);
     
     return execute(compileTemplate(template), null, new MapVariableResolverFactory(vars), registry);
   }
 
   public static void eval(String template, Map vars, TemplateRegistry registry, TemplateOutputStream stream) {
+    validateVars(vars);
+    
     execute(compileTemplate(template), null, new MapVariableResolverFactory(vars), registry, stream);
   }
 
   public static void eval(String template, Map vars, TemplateRegistry registry, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compileTemplate(template), null, new MapVariableResolverFactory(vars), registry, stream);
   }
 
   public static Object eval(String template, Object ctx, Map vars, TemplateRegistry registry) {
+    validateVars(vars);
+    
     return execute(compileTemplate(template), ctx, new MapVariableResolverFactory(vars), registry);
   }
 
   public static void eval(String template, Object ctx, Map vars, TemplateRegistry registry, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compileTemplate(template), ctx, new MapVariableResolverFactory(vars), registry, stream);
   }
 
@@ -176,18 +191,26 @@ public class TemplateRuntime {
   }
 
   public static Object execute(CompiledTemplate compiled, Map vars) {
+    validateVars(vars);
+    
     return execute(compiled.getRoot(), compiled.getTemplate(), new StringBuilder(), null, new MapVariableResolverFactory(vars), null);
   }
 
   public static void execute(CompiledTemplate compiled, Map vars, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compiled.getRoot(), compiled.getTemplate(), new StandardOutputStream(stream), null, new MapVariableResolverFactory(vars), null);
   }
 
   public static Object execute(CompiledTemplate compiled, Object context, Map vars) {
+    validateVars(vars);
+    
     return execute(compiled.getRoot(), compiled.getTemplate(), new StringBuilder(), context, new MapVariableResolverFactory(vars), null);
   }
 
   public static void execute(CompiledTemplate compiled, Object context, Map vars, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compiled.getRoot(), compiled.getTemplate(), new StandardOutputStream(stream), context, new MapVariableResolverFactory(vars), null);
   }
 
@@ -200,10 +223,14 @@ public class TemplateRuntime {
   }
 
   public static Object execute(CompiledTemplate compiled, Object context, Map vars, TemplateRegistry registry) {
+    validateVars(vars);
+    
     return execute(compiled.getRoot(), compiled.getTemplate(), new StringBuilder(), context, new MapVariableResolverFactory(vars), registry);
   }
 
   public static void execute(CompiledTemplate compiled, Object context, Map vars, TemplateRegistry registry, OutputStream stream) {
+    validateVars(vars);
+    
     execute(compiled.getRoot(), compiled.getTemplate(), new StandardOutputStream(stream), context, new MapVariableResolverFactory(vars), registry);
   }
 
@@ -323,5 +350,14 @@ public class TemplateRuntime {
       relPath.push(baseDir);
     }
     return relPath;
+  }
+  
+  private static void validateVars(Map vars){
+    ParserContext pCtx = new ParserContext();
+    for(Object o: vars.values()){
+        if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(o.getClass().getName())) {
+            throw new TemplateError("used class is not allowed to access: " + o.getClass().getName());
+        }
+    }
   }
 }
