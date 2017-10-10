@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Map;
+import org.mvel2.ParserContext;
 
 import static org.mvel2.templates.TemplateCompiler.compileTemplate;
 
@@ -120,6 +121,13 @@ public class TemplateRuntime {
   }
 
   public static Object eval(String template, Map vars, TemplateRegistry registry) {
+    ParserContext pCtx = new ParserContext();
+    for(Object o: vars.values()){
+        if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(o.getClass().getName())) {
+            throw new TemplateError("used class is not allowed to access: " + o.getClass().getName());
+        }
+    }
+    
     return execute(compileTemplate(template), null, new MapVariableResolverFactory(vars), registry);
   }
 
