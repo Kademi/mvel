@@ -35,4 +35,9 @@ public class FiltersManager implements org.mvel2.FiltersManager {
         return this.classFilters.get(0).exposeToScripts(classNameString);
     }
 
+    @Override
+    public boolean exposeObjectToScripts(Object o) {
+        return true;
+    }
+
 }
