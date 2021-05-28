@@ -129,6 +129,7 @@ public class ReflectiveAccessorOptimizer extends AbstractOptimizer implements Ac
     public ReflectiveAccessorOptimizer() {
     }
 
+    @Override
     public void init() {
     }
 
@@ -1185,6 +1186,7 @@ public class ReflectiveAccessorOptimizer extends AbstractOptimizer implements Ac
         }
     }
 
+    @Override
     public Accessor optimizeObjectCreation(ParserContext pCtx, char[] property, int start, int offset,
             Object ctx, Object thisRef, VariableResolverFactory factory) {
         this.length = start + offset;
@@ -1293,10 +1295,12 @@ public class ReflectiveAccessorOptimizer extends AbstractOptimizer implements Ac
         }
     }
 
+    @Override
     public Class getEgressType() {
         return returnType;
     }
 
+    @Override
     public boolean isLiteralOnly() {
         return false;
     }
