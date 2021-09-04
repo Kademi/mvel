@@ -873,10 +873,7 @@ public class PropertyAccessor {
      *         - continues without any effective behaviour if class was not
      *         filtered or filtersManager was not initialized.
      */
-    if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(ctx.getClass().getName())) {
-        return null;
-    }
-    
+
     int _start = cursor;
 
     String tk = cursor != end
@@ -884,6 +881,11 @@ public class PropertyAccessor {
         new String(property, _start + 1, cursor - _start - 1) : "";
 
     cursor++;
+    
+    if(pCtx.getFiltersManager() != null && !pCtx.getFiltersManager().exposeToScripts(ctx.getClass().getName())) {
+        return null;
+    }
+        
 
     Object[] args;
     if (tk.length() == 0) {
