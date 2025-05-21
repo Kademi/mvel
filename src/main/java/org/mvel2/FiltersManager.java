@@ -15,7 +15,7 @@
  */
 package org.mvel2;
 
-import jdk.nashorn.api.scripting.ClassFilter;
+import org.openjdk.nashorn.api.scripting.ClassFilter;
 
 /**
  * This interface works on providing MVEL with the ability of creating

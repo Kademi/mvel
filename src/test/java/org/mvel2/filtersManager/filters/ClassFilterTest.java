@@ -8,7 +8,7 @@ package org.mvel2.filtersManager.filters;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.nashorn.api.scripting.ClassFilter;
+import org.openjdk.nashorn.api.scripting.ClassFilter;
 
 /**
  *

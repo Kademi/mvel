@@ -15,18 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.mvel2.util;
 
-import java.lang.reflect.Field;
-import sun.misc.Unsafe;
-
 public class JITClassLoader extends ClassLoader implements MVELClassLoader {
-  public JITClassLoader(ClassLoader classLoader) {
-    super(classLoader);
-  }
 
-  public Class<?> defineClassX(String className, byte[] b, int off, int len) {
-    return super.defineClass(className, b, off, len);
-  }
+    public JITClassLoader(ClassLoader classLoader) {
+        super(classLoader);
+    }
+
+    public Class<?> defineClassX(String className, byte[] b, int off, int len) {
+        return super.defineClass(className, b, off, len);
+    }
 }

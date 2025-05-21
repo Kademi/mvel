@@ -82,7 +82,6 @@ import org.mvel2.integration.VariableResolverFactory;
 import org.mvel2.util.ErrorUtil;
 import org.mvel2.util.ExecutionStack;
 import org.mvel2.util.FunctionParser;
-import org.mvel2.util.PropertyTools;
 import org.mvel2.util.ProtoParser;
 
 import java.io.Serializable;
@@ -91,8 +90,6 @@ import java.util.WeakHashMap;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static java.lang.Double.parseDouble;
-import static java.lang.Thread.currentThread;
 import static org.mvel2.Operator.*;
 import static org.mvel2.ast.TypeDescriptor.getClassReference;
 import static org.mvel2.util.ArrayTools.findFirst;
@@ -213,7 +210,7 @@ public class AbstractParser implements Parser, Serializable {
       CLASS_LITERALS.put("ClassLoader", ClassLoader.class);
       CLASS_LITERALS.put("Runtime", Runtime.class);
       CLASS_LITERALS.put("Thread", Thread.class);
-      CLASS_LITERALS.put("Compiler", Compiler.class);
+      // CLASS_LITERALS.put("Compiler", Compiler.class);
       CLASS_LITERALS.put("StringBuffer", StringBuffer.class);
       CLASS_LITERALS.put("ThreadLocal", ThreadLocal.class);
       CLASS_LITERALS.put("SecurityManager", SecurityManager.class);

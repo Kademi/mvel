@@ -7,7 +7,7 @@ package org.mvel2.filtersManager;
 
 import org.mvel2.filtersManager.filters.ClassFilterTest;
 import java.util.ArrayList;
-import jdk.nashorn.api.scripting.ClassFilter;
+import org.openjdk.nashorn.api.scripting.ClassFilter;
 
 /**
  *
